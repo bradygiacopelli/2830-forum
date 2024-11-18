@@ -49,3 +49,62 @@ This web application serves as a local forum platform where users can join discu
 5. **Search and Filter**
 6. **Responsive UI**
 7. **Testing and Debugging**
+
+
+## How to Run the App
+
+Follow these steps to set up and run the Forum App locally:
+
+### Prerequisites
+
+1. **Install Node.js and npm:**
+   - Use [Node Version Manager (nvm)](https://github.com/nvm-sh/nvm) to install Node.js.
+   - Run the following commands:
+     ```bash
+     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+     source ~/.nvm/nvm.sh
+     nvm install --lts
+     ```
+
+2. **Install Homebrew (macOS only):**
+   - If you’re on macOS and encounter issues related to `icu4c`, install it via Homebrew:
+     ```bash
+     brew install icu4c
+     brew link --force icu4c
+     ```
+
+3. **Verify Installation:**
+   - Ensure `node` and `npm` are correctly installed:
+     ```bash
+     node -v
+     npm -v
+     ```
+
+---
+
+### Running the App Locally
+
+1. **Clone the Repository:**
+   ```bash
+   git clone <repository-url>
+   cd forum-app
+   ```
+
+2. **Install Dependencies:**
+
+Use the `make install` command to install dependencies for both the frontend and backend:
+
+    ```bash
+    make install
+    ``` 
+
+3. **Start the App:**
+
+Use the `make start` command to run both the frontend and backend:
+
+    ```bash
+    make start
+    ```
+
+
+
