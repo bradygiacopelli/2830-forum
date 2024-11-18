@@ -87,7 +87,7 @@ Follow these steps to set up and run the Forum App locally:
 1. **Clone the Repository:**
    ```bash
    git clone <repository-url>
-   cd forum-app
+   cd 2830-forum
    ```
 
 2. **Install Dependencies:**
