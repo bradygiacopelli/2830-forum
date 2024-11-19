@@ -2,8 +2,8 @@
 
 # Install dependencies for client and server
 install:
-	npm install --prefix client
-	npm install --prefix server
+	cd client && npm install
+	cd server && npm install
 
 # Start the app locally (frontend + backend)
 start:
