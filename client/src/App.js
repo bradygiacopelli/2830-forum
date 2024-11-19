@@ -1,30 +1,79 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignupPage';
+import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
-import CreateForumPage from './pages/CreateForumPage';
 import ForumPage from './pages/ForumPage';
 import CreatePostPage from './pages/CreatePostPage';
+import Navbar from './components/Navbar';
+import ProfilePage from './pages/ProfilePage';
+import CreateForumPage from './pages/CreateForumPage';
 
-function App() {
+const App = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [profilePicture, setProfilePicture] = useState('/uploads/default-profile.png');
+
+    // Check if the user is logged in and set the profile picture on app load
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userPicture = localStorage.getItem('profilePicture');
+        setIsAuthenticated(!!token); // Convert token existence to boolean
+        if (userPicture) {
+            setProfilePicture(userPicture);
+        }
+    }, []);
+
+    const refreshProfilePicture = async () => {
+        const userId = localStorage.getItem('userId');
+        if (!userId) return;
+        try {
+            const response = await fetch(`http://localhost:5001/api/users/${userId}`);
+            if (response.ok) {
+                const data = await response.json();
+                const updatedPicture = `http://localhost:5001${data.profilePicture}`;
+                setProfilePicture(updatedPicture);
+                localStorage.setItem('profilePicture', updatedPicture);
+            }
+        } catch (error) {
+            console.error('Error refreshing profile picture:', error);
+        }
+    };
+
     return (
         <Router>
-            <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignUpPage />} />
+            {/* Conditionally render the Navbar */}
+            <div>
+                {isAuthenticated && (
+                    <Navbar
+                        setIsAuthenticated={setIsAuthenticated}
+                        profilePicture={profilePicture}
+                        refreshProfilePicture={refreshProfilePicture}
+                    />
+                )}
+            </div>
 
-                {/* Protected Routes */}
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/create-forum" element={<CreateForumPage />} />
-                <Route path="/forums/:forumId" element={<ForumPage />} />
-                <Route path="/forums/:forumId/create-post" element={<CreatePostPage />} />
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
+                <Route path="/signup" element={<SignupPage />} />
+                {isAuthenticated ? (
+                    <>
+                        <Route path="/dashboard" element={<DashboardPage />} />
+                        <Route
+                            path="/profile"
+                            element={<ProfilePage refreshProfilePicture={refreshProfilePicture} />}
+                        />
+                        <Route path="/create-forum" element={<CreateForumPage />} />
+                        <Route path="/forums/:forumId" element={<ForumPage />} />
+                        <Route path="/forums/:forumId/create-post" element={<CreatePostPage />} />
+                    </>
+                ) : (
+                    <Route path="*" element={<Navigate to="/" />} />
+                )}
             </Routes>
         </Router>
     );
-}
+};
 
 export default App;

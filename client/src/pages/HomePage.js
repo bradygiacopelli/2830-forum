@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 function HomePage() {
     return (
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
-            <h1>Welcome to the Forum App!</h1>
-            <p>This is the home page of your forum app.</p>
+            <h1>Welcome to ScrollSpace!</h1>
+            <p>This is the home page of ScrollSpace.</p>
             <Link to="/login">
                 <button style={{ padding: '10px 20px', fontSize: '16px', marginRight: '10px' }}>
                     Login

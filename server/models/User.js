@@ -5,6 +5,11 @@ const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    username: { type: String, required: true, unique: true }, // Unique username
+    displayName: { type: String, required: true }, // Name displayed on posts
+    actualName: { type: String, required: true }, // User's full name
+    bio: { type: String, default: '' }, // Optional bio
+    profilePicture: { type: String, default: '/uploads/default-profile.png' },
     createdAt: { type: Date, default: Date.now },
 });
 
