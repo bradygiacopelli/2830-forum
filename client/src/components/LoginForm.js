@@ -8,18 +8,26 @@ const LoginForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:5001/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        });
 
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('token', data.token); // Save JWT
-            navigate('/dashboard'); // Redirect to the dashboard
-        } else {
-            alert('Invalid credentials');
+        try {
+            const response = await fetch('http://localhost:5001/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (response.ok) {
+                const { token, userId } = await response.json(); // Extract userId from the response
+                localStorage.setItem('token', token); // Store token
+                localStorage.setItem('userId', userId); // Store userId
+                console.log("localStorage:", localStorage)
+                navigate('/dashboard');
+            } else {
+                alert('Invalid credentials');
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+            alert('An error occurred.');
         }
     };
 
