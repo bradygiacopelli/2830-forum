@@ -31,8 +31,6 @@ This web application serves as a local forum platform where users can join discu
 - **Search Functionality:** Search for forums, posts, or users.
 - **Filter Posts:** Sort posts by most recent or most upvoted.
 
-### Mobile-Friendly Design
-- **Responsive UI:** The app will be styled with a responsive framework like Bootstrap or W3.CSS to ensure usability on various devices.
 
 ## Technologies Used
 - **Frontend:** React (Components, State Management)
@@ -80,6 +78,26 @@ Follow these steps to set up and run the Forum App locally:
      npm -v
      ```
 
+### Adding Environment Variables
+1.  **Create a .env file:**
+
+    - In the root directory of the backend, create a file named .env:
+    ```bash
+    touch .env
+    ```
+2.  **Add the following variables:**
+
+    - Replace the placeholders with your actual configurations:
+    ```makefile
+    PORT=5001
+    MONGO_URI=mongodb://localhost:27017/forum-app
+    JWT_SECRET=<your-secret-key>
+    ```
+
+    - JWT_SECRET: This is a key used to sign JSON Web Tokens (JWTs). You can generate a secure key using the following command:
+    ```bash
+    openssl rand -hex 64
+    ```
 ---
 
 ### Running the App Locally
