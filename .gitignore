@@ -8,7 +8,7 @@ build/
 .env
 
 # User uploads
-public/uploads/
+server/public/uploads/
 
 # Logs
 *.log
