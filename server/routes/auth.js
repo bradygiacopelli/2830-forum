@@ -31,7 +31,10 @@ router.post('/login', async (req, res) => {
         console.log('Login successful for user:', email);
 
         // Include userId in the response
-        res.json({ token, userId: user._id });
+        res.json({
+            token,
+            userId: user._id,
+         });
     } catch (err) {
         console.error('Error during login:', err);
         res.status(500).json({ message: 'Server error' });
@@ -42,23 +45,29 @@ router.post('/login', async (req, res) => {
 
 // Sign-Up Route
 router.post('/signup', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, username, displayName, actualName } = req.body;
 
     try {
-        // Check if the user already exists
-        const existingUser = await User.findOne({ email });
+        // Check if the username or email already exists
+        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({ message: 'Email or username already exists' });
         }
 
         // Create and save the new user
-        const newUser = new User({ email, password });
+        const newUser = new User({
+            email,
+            password,
+            username,
+            displayName,
+            actualName,
+        });
         await newUser.save();
 
         // Generate a JWT for immediate login after sign-up
         const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: '1h' });
 
-        res.status(201).json({ token, message: 'User created successfully' });
+        res.status(201).json({ token, message: 'User created successfully', userId: newUser._id });
     } catch (err) {
         console.error('Sign-Up Error:', err);
         res.status(500).json({ message: 'Server error' });

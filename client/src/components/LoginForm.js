@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ProfilePage from '../pages/ProfilePage';
 
-const LoginForm = () => {
+const LoginForm = ({ setIsAuthenticated }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate(); // Hook for navigation
@@ -18,12 +19,16 @@ const LoginForm = () => {
 
             if (response.ok) {
                 const { token, userId } = await response.json(); // Extract userId from the response
+                console.log('Token:', token, 'UserId:', userId); // Debug log
                 localStorage.setItem('token', token); // Store token
                 localStorage.setItem('userId', userId); // Store userId
-                console.log("localStorage:", localStorage)
+                console.log(localStorage)
+                setIsAuthenticated(true); // Update auth state
                 navigate('/dashboard');
             } else {
-                alert('Invalid credentials');
+                const errorData = await response.json(); // Parse error response
+                console.error('Error response:', errorData);
+                alert(errorData.message || 'Invalid credentials');
             }
         } catch (error) {
             console.error('Error during login:', error);
