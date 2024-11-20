@@ -1,18 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import "./HP_Styling.css";
 
 function HomePage() {
     return (
-        <div style={{ textAlign: 'center', marginTop: '50px' }}>
-            <h1>Welcome to the Forum App!</h1>
+        <div className="home-page">
+            <h1>Welcome to ScrollSpace!</h1>
             <p>This is the home page of your forum app.</p>
             <Link to="/login">
-                <button style={{ padding: '10px 20px', fontSize: '16px', marginRight: '10px' }}>
+            <button className="homepage-button">
                     Login
                 </button>
             </Link>
             <Link to="/signup">
-                <button style={{ padding: '10px 20px', fontSize: '16px' }}>
+            <button className="homepage-button">
                     Sign Up
                 </button>
             </Link>
