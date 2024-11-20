@@ -76,13 +76,33 @@ const PublicProfilePage = () => {
                     <h1>{profile.displayName}</h1>
                     <p>@{profile.username}</p>
                     <p>{profile.bio}</p>
-                    <p>Followers: {profile.followers.length}</p>
-                    <p>Following: {profile.following.length}</p>
+                    <p>Followers: {profile.followers?.length || 0}</p>
+                    <p>Following: {profile.following?.length || 0}</p>
                     {loggedInUserId !== userId && (
                         <button onClick={isFollowing ? handleUnfollow : handleFollow}>
                             {isFollowing ? 'Unfollow' : 'Follow'}
                         </button>
                     )}
+                </div>
+            )}
+            {profile?.createdForums?.length > 0 && (
+                <div>
+                    <h2>Forums Created</h2>
+                    <ul>
+                        {profile.createdForums.map((forum) => (
+                            <li key={forum._id}>{forum.name}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+            {profile?.subscribedForums?.length > 0 && (
+                <div>
+                    <h2>Forums Subscribed To</h2>
+                    <ul>
+                        {profile.subscribedForums.map((forum) => (
+                            <li key={forum._id}>{forum.name}</li>
+                        ))}
+                    </ul>
                 </div>
             )}
         </div>

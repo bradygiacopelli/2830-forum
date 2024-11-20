@@ -6,6 +6,7 @@ const ForumPage = () => {
     const [forum, setForum] = useState(null);
     const [posts, setPosts] = useState([]);
     const [sort, setSort] = useState('latest'); // 'latest' or 'mostLiked'
+    const [isSubscribed, setIsSubscribed] = useState(false);
     const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
 
     // Fetch forum details
@@ -45,6 +46,28 @@ const ForumPage = () => {
         };
         fetchPosts();
     }, [forumId, sort]);
+
+    // Check subscription status
+    useEffect(() => {
+        const fetchSubscriptionStatus = async () => {
+            try {
+                const response = await fetch(`http://localhost:5001/api/forums/${forumId}/isSubscribed`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId }),
+                });
+
+                if (response.ok) {
+                    const { isSubscribed } = await response.json();
+                    setIsSubscribed(isSubscribed);
+                }
+            } catch (error) {
+                console.error('Error checking subscription status:', error);
+            }
+        };
+
+        fetchSubscriptionStatus();
+    }, [forumId, userId]);
 
     const updatePostUI = (updatedPost) => {
         setPosts((prevPosts) =>
@@ -98,11 +121,52 @@ const ForumPage = () => {
         }
     };
 
+    const handleSubscribe = async () => {
+        try {
+            const response = await fetch(`http://localhost:5001/api/forums/${forumId}/subscribe`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId }),
+            });
+
+            if (response.ok) {
+                setIsSubscribed(true);
+            } else {
+                console.error('Failed to subscribe');
+            }
+        } catch (error) {
+            console.error('Error subscribing:', error);
+        }
+    };
+
+    const handleUnsubscribe = async () => {
+        try {
+            const response = await fetch(`http://localhost:5001/api/forums/${forumId}/unsubscribe`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId }),
+            });
+
+            if (response.ok) {
+                setIsSubscribed(false);
+            } else {
+                console.error('Failed to unsubscribe');
+            }
+        } catch (error) {
+            console.error('Error unsubscribing:', error);
+        }
+    };
+
     return (
         <div>
             {/* Display the forum name */}
             <h1>{forum ? forum.name : 'Loading...'}</h1>
             <p>{forum ? forum.description : ''}</p>
+
+            {/* Subscribe/Unsubscribe Button */}
+            <button onClick={isSubscribed ? handleUnsubscribe : handleSubscribe}>
+                {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+            </button>
 
             {/* Add a button to create a post */}
             <Link to={`/forums/${forumId}/create-post`}>
@@ -121,16 +185,18 @@ const ForumPage = () => {
                     <li key={post._id}>
                         <h2>{post.title}</h2>
                         <p>{post.content}</p>
-                        <div>
-                            <Link to={`/users/${post.createdBy._id}`}>
-                                <img
-                                    src={`http://localhost:5001${post.createdBy.profilePicture}`}
-                                    alt={post.createdBy.displayName}
-                                    style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-                                />
-                                <span>{post.createdBy.displayName}</span>
-                            </Link>
-                        </div>
+                        {post.createdBy && (
+                            <div>
+                                <Link to={`/users/${post.createdBy._id}`}>
+                                    <img
+                                        src={`http://localhost:5001${post.createdBy.profilePicture}`}
+                                        alt={post.createdBy.displayName}
+                                        style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+                                    />
+                                    <span>{post.createdBy.displayName}</span>
+                                </Link>
+                            </div>
+                        )}
                         <button onClick={() => handleLike(post._id)}>Like ({post.likes})</button>
                         <button onClick={() => handleDislike(post._id)}>Dislike ({post.dislikes})</button>
                     </li>
