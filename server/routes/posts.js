@@ -6,9 +6,10 @@ const Post = require('../models/Post');
 router.get('/:forumId', async (req, res) => {
     const { sort } = req.query; // Sort can be 'mostLiked' or 'latest'
     try {
-        const posts = await Post.find({ forumId: req.params.forumId }).sort(
-            sort === 'mostLiked' ? { likes: -1 } : { createdAt: -1 }
-        );
+        const posts = await Post.find({ forumId: req.params.forumId })
+            .sort(sort === 'mostLiked' ? { likes: -1 } : { createdAt: -1 })
+            .populate('createdBy', 'username displayName profilePicture'); // Include user info
+
         res.json(posts);
     } catch (err) {
         console.error('Error fetching posts:', err);
@@ -42,27 +43,23 @@ router.post('/:forumId', async (req, res) => {
 // Like a post (toggle functionality)
 router.post('/:postId/like', async (req, res) => {
     const { userId } = req.body;
-
     if (!userId) {
         return res.status(400).json({ message: 'User ID is required' });
     }
-
     try {
-        const post = await Post.findById(req.params.postId);
+        const post = await Post.findById(req.params.postId).populate('createdBy', 'displayName profilePicture');
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
         }
 
         if (post.likedBy.includes(userId)) {
-            // User already liked the post, remove the like
             post.likedBy.pull(userId);
             post.likes -= 1;
         } else {
-            // Add the like
             post.likedBy.push(userId);
             post.likes += 1;
 
-            // If the user had previously disliked the post, remove the dislike
+            // If previously disliked, remove the dislike
             if (post.dislikedBy.includes(userId)) {
                 post.dislikedBy.pull(userId);
                 post.dislikes -= 1;
@@ -70,6 +67,10 @@ router.post('/:postId/like', async (req, res) => {
         }
 
         await post.save();
+
+        // Re-populate the `createdBy` field
+        await post.populate('createdBy', 'displayName profilePicture');
+
         res.json(post);
     } catch (err) {
         console.error('Error liking post:', err);
@@ -80,27 +81,23 @@ router.post('/:postId/like', async (req, res) => {
 // Dislike a post (toggle functionality)
 router.post('/:postId/dislike', async (req, res) => {
     const { userId } = req.body;
-
     if (!userId) {
         return res.status(400).json({ message: 'User ID is required' });
     }
-
     try {
-        const post = await Post.findById(req.params.postId);
+        const post = await Post.findById(req.params.postId).populate('createdBy', 'displayName profilePicture');
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
         }
 
         if (post.dislikedBy.includes(userId)) {
-            // User already disliked the post, remove the dislike
             post.dislikedBy.pull(userId);
             post.dislikes -= 1;
         } else {
-            // Add the dislike
             post.dislikedBy.push(userId);
             post.dislikes += 1;
 
-            // If the user had previously liked the post, remove the like
+            // If previously liked, remove the like
             if (post.likedBy.includes(userId)) {
                 post.likedBy.pull(userId);
                 post.likes -= 1;
@@ -108,11 +105,16 @@ router.post('/:postId/dislike', async (req, res) => {
         }
 
         await post.save();
+
+        // Re-populate the `createdBy` field
+        await post.populate('createdBy', 'displayName profilePicture');
+
         res.json(post);
     } catch (err) {
         console.error('Error disliking post:', err);
         res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 module.exports = router;

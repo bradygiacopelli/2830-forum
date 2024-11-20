@@ -33,46 +33,67 @@ const SignupForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <div style={styles.container}>
+            {/* Back Button */}
+            <button onClick={() => navigate('/')} style={styles.backButton}>
+                ← Back to Home
+            </button>
+
             <h1>Sign Up</h1>
-            <label>Email:</label>
-            <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-            <label>Password:</label>
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-            <label>Username:</label>
-            <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-            />
-            <label>Display Name:</label>
-            <input
-                type="text"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                required
-            />
-            <label>Full Name:</label>
-            <input
-                type="text"
-                value={actualName}
-                onChange={(e) => setActualName(e.target.value)}
-                required
-            />
-            <button type="submit">Sign Up</button>
-        </form>
+            <form onSubmit={handleSubmit}>
+                <label>Email:</label>
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <label>Password:</label>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <label>Username:</label>
+                <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
+                <label>Display Name:</label>
+                <input
+                    type="text"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    required
+                />
+                <label>Full Name:</label>
+                <input
+                    type="text"
+                    value={actualName}
+                    onChange={(e) => setActualName(e.target.value)}
+                    required
+                />
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
     );
+};
+
+const styles = {
+    container: {
+        padding: '20px',
+    },
+    backButton: {
+        background: 'none',
+        border: 'none',
+        color: '#007BFF',
+        fontSize: '16px',
+        cursor: 'pointer',
+        marginBottom: '10px',
+    },
 };
 
 export default SignupForm;

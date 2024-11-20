@@ -70,4 +70,55 @@ router.put('/:userId', upload.single('profilePicture'), async (req, res) => {
     }
 });
 
+// Follow a user
+router.post('/:userId/follow', async (req, res) => {
+    const { followerId } = req.body; // ID of the user following
+
+    try {
+        const userToFollow = await User.findById(req.params.userId);
+        const follower = await User.findById(followerId);
+
+        if (!userToFollow || !follower) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (!userToFollow.followers.includes(followerId)) {
+            userToFollow.followers.push(followerId);
+            follower.following.push(req.params.userId);
+
+            await userToFollow.save();
+            await follower.save();
+        }
+
+        res.json({ message: 'Followed successfully', user: userToFollow });
+    } catch (err) {
+        console.error('Error following user:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Unfollow a user
+router.post('/:userId/unfollow', async (req, res) => {
+    const { followerId } = req.body;
+
+    try {
+        const userToUnfollow = await User.findById(req.params.userId);
+        const follower = await User.findById(followerId);
+
+        if (!userToUnfollow || !follower) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        userToUnfollow.followers.pull(followerId);
+        follower.following.pull(req.params.userId);
+
+        await userToUnfollow.save();
+        await follower.save();
+
+        res.json({ message: 'Unfollowed successfully', user: userToUnfollow });
+    } catch (err) {
+        console.error('Error unfollowing user:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 module.exports = router;

@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
     actualName: { type: String, required: true }, // User's full name
     bio: { type: String, default: '' }, // Optional bio
     profilePicture: { type: String, default: '/uploads/default-profile.png' },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Followers
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Following
     createdAt: { type: Date, default: Date.now },
 });
 

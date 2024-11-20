@@ -13,14 +13,18 @@ const ProfilePage = ({ refreshProfilePicture }) => {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const response = await fetch(`http://localhost:5001/api/users/${userId}`);
-            if (response.ok) {
-                const data = await response.json();
-                setProfile(data);
-                setUsername(data.username);
-                setDisplayName(data.displayName);
-                setActualName(data.actualName);
-                setBio(data.bio);
+            try {
+                const response = await fetch(`http://localhost:5001/api/users/${userId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setProfile(data);
+                    setUsername(data.username);
+                    setDisplayName(data.displayName);
+                    setActualName(data.actualName);
+                    setBio(data.bio);
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error);
             }
         };
         fetchProfile();
@@ -40,18 +44,23 @@ const ProfilePage = ({ refreshProfilePicture }) => {
             formData.append('profilePicture', newProfilePicture);
         }
 
-        const response = await fetch(`http://localhost:5001/api/users/${userId}`, {
-            method: 'PUT',
-            body: formData,
-        });
+        try {
+            const response = await fetch(`http://localhost:5001/api/users/${userId}`, {
+                method: 'PUT',
+                body: formData,
+            });
 
-        if (response.ok) {
-            const updatedProfile = await response.json();
-            setProfile(updatedProfile.user);
-            refreshProfilePicture(); // Refresh navbar picture
-            setEditing(false);
-        } else {
-            alert('Failed to update profile');
+            if (response.ok) {
+                const updatedProfile = await response.json();
+                setProfile(updatedProfile.user);
+                refreshProfilePicture(); // Refresh navbar picture
+                setEditing(false);
+            } else {
+                alert('Failed to update profile');
+            }
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            alert('An error occurred while updating your profile.');
         }
     };
 
@@ -59,13 +68,22 @@ const ProfilePage = ({ refreshProfilePicture }) => {
         <div>
             {profile && (
                 <div>
+                    {/* Profile Picture */}
                     <img
                         src={`http://localhost:5001${profile.profilePicture}`}
                         alt="Profile"
                         style={{ width: '150px', height: '150px', borderRadius: '50%' }}
                     />
+                    {/* Profile Details */}
                     <h1>{profile.displayName || 'User'}</h1>
+                    <p>@{profile.username}</p>
                     <p>{profile.bio || 'No bio provided'}</p>
+
+                    {/* Followers and Following */}
+                    <p>Followers: {profile.followers.length}</p>
+                    <p>Following: {profile.following.length}</p>
+
+                    {/* Edit Profile Button */}
                     <button onClick={() => setEditing(true)}>Edit Profile</button>
                 </div>
             )}

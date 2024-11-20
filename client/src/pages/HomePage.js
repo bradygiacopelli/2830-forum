@@ -1,7 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 function HomePage() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token'); // Check if the user is already authenticated
+        if (token) {
+            navigate('/dashboard'); // Redirect to the dashboard if authenticated
+        }
+    }, [navigate]);
+
     return (
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
             <h1>Welcome to ScrollSpace!</h1>

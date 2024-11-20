@@ -9,6 +9,7 @@ import CreatePostPage from './pages/CreatePostPage';
 import Navbar from './components/Navbar';
 import ProfilePage from './pages/ProfilePage';
 import CreateForumPage from './pages/CreateForumPage';
+import PublicProfilePage from './pages/PublicProfilePage';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -67,6 +68,7 @@ const App = () => {
                         <Route path="/create-forum" element={<CreateForumPage />} />
                         <Route path="/forums/:forumId" element={<ForumPage />} />
                         <Route path="/forums/:forumId/create-post" element={<CreatePostPage />} />
+                        <Route path="/users/:userId" element={<PublicProfilePage />} />
                     </>
                 ) : (
                     <Route path="*" element={<Navigate to="/" />} />

@@ -121,6 +121,16 @@ const ForumPage = () => {
                     <li key={post._id}>
                         <h2>{post.title}</h2>
                         <p>{post.content}</p>
+                        <div>
+                            <Link to={`/users/${post.createdBy._id}`}>
+                                <img
+                                    src={`http://localhost:5001${post.createdBy.profilePicture}`}
+                                    alt={post.createdBy.displayName}
+                                    style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+                                />
+                                <span>{post.createdBy.displayName}</span>
+                            </Link>
+                        </div>
                         <button onClick={() => handleLike(post._id)}>Like ({post.likes})</button>
                         <button onClick={() => handleDislike(post._id)}>Dislike ({post.dislikes})</button>
                     </li>
