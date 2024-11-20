@@ -81,7 +81,7 @@ Follow these steps to set up and run the Forum App locally:
 ### Adding Environment Variables
 1.  **Create a .env file:**
 
-    - In the root directory of the backend, create a file named .env:
+    - In the server directory, create a file named .env:
     ```bash
     touch .env
     ```
