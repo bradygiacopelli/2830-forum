@@ -1,8 +1,18 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import "./HP_Styling.css";
 
 function HomePage() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token'); // Check if the user is already authenticated
+        if (token) {
+            navigate('/dashboard'); // Redirect to the dashboard if authenticated
+        }
+    }, [navigate]);
+
     return (
         <div className="home-page">
         <h1>Welcome to ScrollSpace!</h1>

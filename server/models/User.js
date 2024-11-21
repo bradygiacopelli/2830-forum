@@ -5,8 +5,18 @@ const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
+    displayName: { type: String, required: true },
+    actualName: { type: String, required: true },
+    bio: { type: String, default: '' },
+    profilePicture: { type: String, default: '/uploads/default-profile.png' },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    createdForums: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Forum' }], // Forums created by the user
+    subscribedForums: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Forum' }], // Forums the user is subscribed to
     createdAt: { type: Date, default: Date.now },
 });
+
 
 // Hash password before saving the user
 userSchema.pre('save', async function (next) {

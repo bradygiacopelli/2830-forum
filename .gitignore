@@ -1,3 +1,23 @@
+# Node.js dependencies
 node_modules/
+
+# React production build
 build/
+
+# Environment variables
 .env
+
+# User uploads
+server/public/uploads/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# macOS system files
+.DS_Store
+
+# VSCode settings
+.vscode/
