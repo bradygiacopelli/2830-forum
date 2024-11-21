@@ -1,10 +1,15 @@
 .home-page {
     text-align: center;
-    margin-top: 50px;
-    background-color: #9cbdda; /* Light blue background */
-    padding: 20px; 
-    border-radius: 10px; 
+    margin: 50px auto;
+    background-color: #9cbdda; 
+    padding: 20px;
+    border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    min-height: calc(100vh - 100px); 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
 }
 
 .homepage-button {
@@ -21,4 +26,18 @@
 .homepage-button:hover {
     background-color: #0056b3;
     transform: scale(1.1);
+}
+
+.or-text {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+.button-container {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px; 
+    margin-top: 20px;
 }
