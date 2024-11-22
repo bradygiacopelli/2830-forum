@@ -8,9 +8,7 @@ build/
 .env
 
 # User uploads
-/uploads/pages/*
-!/uploads/pages/default-forum-image.png
-!/uploads/pages/default-profile.png
+server/public/uploads/
 
 # Logs
 *.log
