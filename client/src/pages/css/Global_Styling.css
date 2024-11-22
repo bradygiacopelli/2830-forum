@@ -12,6 +12,8 @@
 
     --tertiary: #FF6B6B;
     --tertiary-dark: #B04545;
+
+    --text-font: 'Gabarito', 'Arial', sans-serif;
 }
 
 body {

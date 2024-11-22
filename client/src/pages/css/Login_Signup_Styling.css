@@ -4,7 +4,7 @@
 
     flex-direction: column;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 }
 
 .login-form {
@@ -29,16 +29,21 @@
 /* Labels and Inputs */
 .login-form label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 
+    font-family: var(--text-font);
     font-weight: bold;
+    font-size: 13pt;
     color: #333;
 }
 
 .login-form input {
     width: 100%;
     padding: 10px;
-    margin-bottom: 17px;
+    margin-bottom: 20px;
+
+    font-family: var(--text-font);
+    font-size: 12pt;
 
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -69,6 +74,7 @@
     border: none;
     margin-bottom: 20px;
 
+    font-family: var(--text-font);
     color: var(--primary-dark);
     font-size: 12pt;
     
