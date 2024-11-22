@@ -2,7 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import "./HP_Styling.css";
+import "./css/Global_Styling.css";
+import "./css/HP_Styling.css";
 
 function HomePage() {
     const navigate = useNavigate();
@@ -22,11 +23,11 @@ function HomePage() {
         
         <div className="button-container">
             <Link to="/login">
-                <button className="homepage-button">Login</button>
+                <button className="homepage-button highlighted-button">Login</button>
             </Link>
-            <span className="or-text">or</span> 
+            <span className="or-text">- or -</span> 
             <Link to="/signup">
-                <button className="homepage-button">Sign Up</button>
+                <button className="homepage-button highlighted-button">Sign Up</button>
             </Link>
         </div>
     </div>

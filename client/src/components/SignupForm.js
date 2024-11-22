@@ -33,13 +33,9 @@ const SignupForm = () => {
     };
 
     return (
-        <div style={styles.container}>
-            {/* Back Button */}
-            <button onClick={() => navigate('/')} style={styles.backButton}>
-                ← Back to Home
-            </button>
-
-            <h1>Sign Up</h1>
+        <div className="login-form">
+            <button className='back-button' onClick={() => navigate('/')}>← Back to Home</button>
+            
             <form onSubmit={handleSubmit}>
                 <label>Email:</label>
                 <input
@@ -76,24 +72,10 @@ const SignupForm = () => {
                     onChange={(e) => setActualName(e.target.value)}
                     required
                 />
-                <button type="submit">Sign Up</button>
+                <button type="submit" className='highlighted-button'>Sign Up</button>
             </form>
         </div>
     );
-};
-
-const styles = {
-    container: {
-        padding: '20px',
-    },
-    backButton: {
-        background: 'none',
-        border: 'none',
-        color: '#007BFF',
-        fontSize: '16px',
-        cursor: 'pointer',
-        marginBottom: '10px',
-    },
 };
 
 export default SignupForm;

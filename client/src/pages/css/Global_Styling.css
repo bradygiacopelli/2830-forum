@@ -1,0 +1,54 @@
+:root {
+    --white: #F9F9F8;
+    --white-light: #FFFFFF;
+
+    --title: #000000;
+    --text: #222222;
+
+    --primary: #4FC2B5;
+    --primary-dark: #218278;
+
+    --secondary: #BDE562;
+
+    --tertiary: #FF6B6B;
+    --tertiary-dark: #B04545;
+}
+
+body {
+    background-color: var(--white);
+    margin: 0;
+    font-family: 'Gabarito', sans-serif;
+}
+
+input:focus {
+    outline: none;
+}
+
+h1 {
+    font-family: 'DM Serif Display', serif;
+    color: var(--title);
+    font-weight: 400;
+}
+
+p {
+    font-family: 'Gabarito', sans-serif;
+    color: var(--text);
+    font-size: 14pt;
+}
+
+.highlighted-button {
+    font-size: 16px;
+    color: white;
+
+    background-color: var(--primary);
+    padding: 10px 30px;
+    border-radius: 30px;
+    border: none;
+    
+    cursor: pointer;
+    transition: transform 0.1s ease-out, background-color 0.1s ease;
+}
+.highlighted-button:hover {
+    background-color: color-mix(in srgb, var(--primary-dark), var(--primary) 80%);
+    transform: scale(1.03);
+}

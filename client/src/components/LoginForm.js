@@ -34,39 +34,27 @@ const LoginForm = ({ setIsAuthenticated }) => {
 
     return (
         <form className="login-form" onSubmit={handleSubmit}>
-            <label>Email:</label>
+            <button className='back-button' onClick={() => navigate('/')}>← Back to Home</button>
+            
+            <label>Email</label>
             <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
             />
-            <label>Password:</label>
+            <label>Password</label>
             <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
             />
-            <button type="submit" className="login-button">
+            <button type="submit" className="login-button highlighted-button">
                 Login
             </button>
         </form>
     );
-};
-
-const styles = {
-    container: {
-        padding: '20px',
-    },
-    backButton: {
-        background: 'none',
-        border: 'none',
-        color: '#007BFF',
-        fontSize: '16px',
-        cursor: 'pointer',
-        marginBottom: '10px',
-    },
 };
 
 export default LoginForm;

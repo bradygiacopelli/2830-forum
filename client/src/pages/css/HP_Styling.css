@@ -1,0 +1,35 @@
+.home-page {
+    display: flex;
+    height: 100vh;
+
+    font-family: 'Gabarito', sans-serif;
+    text-align: center;
+
+    flex-direction: column;
+    justify-content: center;
+}
+
+h1 {
+    font-size: 44pt;
+    margin: 0;
+}
+
+p {
+    margin: 15px;
+}
+
+.or-text {
+    font-size: 16px;
+    color: var(--text);
+    font-weight: bold;
+    font-style: italic;
+}
+
+.button-container {
+    display: flex;
+    margin-top: 20px;
+    
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
