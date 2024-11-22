@@ -1,12 +1,13 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import "./HP_Styling.css";
 
 function HomePage() {
     const navigate = useNavigate();
 
-    useEffect(() => {
+    React.useEffect(() => {
         const token = localStorage.getItem('token'); // Check if the user is already authenticated
         if (token) {
             navigate('/dashboard'); // Redirect to the dashboard if authenticated
