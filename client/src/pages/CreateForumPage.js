@@ -4,34 +4,40 @@ import { useNavigate } from 'react-router-dom';
 const CreateForumPage = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [file, setFile] = useState(null); // State to hold the uploaded image
     const navigate = useNavigate();
+
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
-        console.log('Submitting forum creation:', { name, description, userId }); // Log to verify
+
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', description);
+        formData.append('userId', userId);
+        if (file) {
+            formData.append('image', file); // Add the image to the form data
+        }
 
         try {
             const response = await fetch('http://localhost:5001/api/forums/create', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, description, userId }), // Include userId in the request
+                body: formData,
             });
-
-            console.log('Response status:', response.status); // Log response status
 
             if (response.ok) {
                 navigate('/dashboard'); // Redirect to dashboard
             } else {
                 const errorData = await response.json();
-                console.error('Error data:', errorData); // Log response error data
                 alert(errorData.message || 'Failed to create forum.');
             }
         } catch (error) {
-            console.error('Error creating forum:', error); // Log any fetch-related errors
+            console.error('Error creating forum:', error);
             alert('An error occurred while creating the forum.');
         }
     };
@@ -52,6 +58,8 @@ const CreateForumPage = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
+                <label>Upload Forum Image:</label>
+                <input type="file" onChange={handleFileChange} />
                 <button type="submit">Create Forum</button>
             </form>
         </div>

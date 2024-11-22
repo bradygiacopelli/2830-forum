@@ -7,6 +7,10 @@ const ForumPage = () => {
     const [posts, setPosts] = useState([]);
     const [sort, setSort] = useState('latest'); // 'latest' or 'mostLiked'
     const [isSubscribed, setIsSubscribed] = useState(false);
+    const [editing, setEditing] = useState(false); // Editing state
+    const [name, setName] = useState(''); // Name input state
+    const [description, setDescription] = useState(''); // Description input state
+    const [file, setFile] = useState(null); // File input state
     const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
 
     // Fetch forum details
@@ -17,6 +21,8 @@ const ForumPage = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setForum(data);
+                    setName(data.name);
+                    setDescription(data.description);
                 } else {
                     console.error('Failed to fetch forum details');
                 }
@@ -69,55 +75,34 @@ const ForumPage = () => {
         fetchSubscriptionStatus();
     }, [forumId, userId]);
 
-    const updatePostUI = (updatedPost) => {
-        setPosts((prevPosts) =>
-            prevPosts.map((post) => (post._id === updatedPost._id ? updatedPost : post))
-        );
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
     };
 
-    const handleLike = async (postId) => {
-        try {
-            const response = await fetch(`http://localhost:5001/api/posts/${postId}/like`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId }),
-            });
-
-            if (response.ok) {
-                const updatedPost = await response.json(); // Fetch updated post data
-                updatePostUI(updatedPost); // Update the specific post in the UI
-            } else {
-                const errorData = await response.json();
-                alert(errorData.message || 'Failed to like the post.');
-            }
-        } catch (error) {
-            console.error('Error liking post:', error);
-            alert('An error occurred while liking the post.');
+    const handleSave = async () => {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', description);
+        if (file) {
+            formData.append('image', file);
         }
-    };
 
-    const handleDislike = async (postId) => {
         try {
-            const response = await fetch(`http://localhost:5001/api/posts/${postId}/dislike`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId }),
+            const response = await fetch(`http://localhost:5001/api/forums/${forumId}`, {
+                method: 'PUT',
+                body: formData,
             });
 
             if (response.ok) {
-                const updatedPost = await response.json(); // Fetch updated post data
-                updatePostUI(updatedPost); // Update the specific post in the UI
+                const updatedForum = await response.json();
+                setForum(updatedForum.forum);
+                setEditing(false);
+                alert('Forum updated successfully!');
             } else {
-                const errorData = await response.json();
-                alert(errorData.message || 'Failed to dislike the post.');
+                alert('Failed to update forum.');
             }
         } catch (error) {
-            console.error('Error disliking post:', error);
-            alert('An error occurred while disliking the post.');
+            console.error('Error updating forum:', error);
         }
     };
 
@@ -159,19 +144,61 @@ const ForumPage = () => {
 
     return (
         <div>
-            {/* Display the forum name */}
-            <h1>{forum ? forum.name : 'Loading...'}</h1>
-            <p>{forum ? forum.description : ''}</p>
+            {/* Display forum details */}
+            {forum ? (
+                <div>
+                    {editing ? (
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Forum Name"
+                        />
+                    ) : (
+                        <h1>{forum.name}</h1>
+                    )}
 
-            {/* Subscribe/Unsubscribe Button */}
-            <button onClick={isSubscribed ? handleUnsubscribe : handleSubscribe}>
-                {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
-            </button>
+                    <img
+                        src={`http://localhost:5001${forum.image}`}
+                        alt="Forum"
+                        style={{ width: '100%', height: '300px', objectFit: 'cover' }}
+                    />
 
-            {/* Add a button to create a post */}
-            <Link to={`/forums/${forumId}/create-post`}>
-                <button>Create Post</button>
-            </Link>
+                    {editing ? (
+                        <textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder="Forum Description"
+                        />
+                    ) : (
+                        <p>{forum.description}</p>
+                    )}
+
+                    {forum.createdBy === userId && (
+                        <div>
+                            {editing ? (
+                                <>
+                                    <label>Upload New Image:</label>
+                                    <input type="file" onChange={handleFileChange} />
+                                    <button onClick={handleSave}>Save Changes</button>
+                                    <button onClick={() => setEditing(false)}>Cancel</button>
+                                </>
+                            ) : (
+                                <button onClick={() => setEditing(true)}>Edit Forum</button>
+                            )}
+                        </div>
+                    )}
+
+                    <button onClick={isSubscribed ? handleUnsubscribe : handleSubscribe}>
+                        {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+                    </button>
+                    <Link to={`/forums/${forumId}/create-post`}>
+                        <button>Create Post</button>
+                    </Link>
+                </div>
+            ) : (
+                <p>Loading forum...</p>
+            )}
 
             {/* Sorting options */}
             <div>
@@ -197,8 +224,6 @@ const ForumPage = () => {
                                 </Link>
                             </div>
                         )}
-                        <button onClick={() => handleLike(post._id)}>Like ({post.likes})</button>
-                        <button onClick={() => handleDislike(post._id)}>Dislike ({post.dislikes})</button>
                     </li>
                 ))}
             </ul>
