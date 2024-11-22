@@ -1,0 +1,232 @@
+/* Forum Page Styling */
+.forum-page {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+/* Forum Banner */
+.forum-banner {
+    position: relative;
+    margin-bottom: 30px;
+    height: 200px;
+    background-color: #9cbdda;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.forum-banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.forum-banner-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+    text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.forum-banner-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.forum-banner-description {
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+/* Edit Forum Styling */
+.edit-forum-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.edit-input,
+.edit-textarea {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 80%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.edit-file-label {
+    display: block;
+    margin: 10px 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.edit-file-input {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    width: 80%;
+    font-size: 14px;
+}
+
+.edit-buttons {
+    margin-top: 15px;
+}
+
+.save-button,
+.cancel-button {
+    margin: 5px;
+    padding: 10px 20px;
+    background: linear-gradient(145deg, #5b74e6, #364fc7);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.save-button:hover,
+.cancel-button:hover {
+    background: linear-gradient(145deg, #3b5db3, #283d87);
+    transform: translateY(-2px);
+}
+
+.save-button:active,
+.cancel-button:active {
+    transform: translateY(1px);
+}
+
+/* Forum Actions */
+.forum-actions {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.subscribe-button,
+.create-post-button,
+.sort-button {
+    padding: 10px 15px;
+    background: linear-gradient(145deg, #5b74e6, #364fc7);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.subscribe-button:hover,
+.create-post-button:hover,
+.sort-button:hover {
+    background: linear-gradient(145deg, #3b5db3, #283d87);
+    transform: translateY(-2px);
+}
+
+.subscribe-button:active,
+.create-post-button:active,
+.sort-button:active {
+    transform: translateY(1px);
+}
+
+.sort-button.active {
+    background: #283d87;
+    font-weight: bold;
+}
+
+/* Posts Styling */
+.forum-posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.post-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.post-user {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.post-user-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.post-display-name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.post-username {
+    color: gray;
+    font-size: 14px;
+}
+
+.post-body {
+    margin-top: 10px;
+}
+
+.post-body h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.post-body p {
+    margin: 5px 0 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.post-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.like-button,
+.dislike-button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.like-button:hover,
+.dislike-button:hover {
+    color: #4459bd;
+    transform: scale(1.1);
+    transition: transform 0.2s ease, color 0.2s ease;
+}

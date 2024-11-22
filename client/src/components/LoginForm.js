@@ -17,8 +17,9 @@ const LoginForm = ({ setIsAuthenticated }) => {
             });
 
             if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('token', data.token);
+                const { token, userId } = await response.json();
+                localStorage.setItem('token', token);
+                localStorage.setItem('userId', userId); // Save userId in local storage
                 setIsAuthenticated(true);
                 navigate('/dashboard');
             } else {

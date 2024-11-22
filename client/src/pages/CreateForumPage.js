@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/CreateForumPage.css';
 
 const CreateForumPage = () => {
     const [name, setName] = useState('');
@@ -43,24 +44,35 @@ const CreateForumPage = () => {
     };
 
     return (
-        <div>
-            <h1>Create a New Forum</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Forum Name:</label>
+        <div className="create-forum-page">
+            <form onSubmit={handleSubmit} className="create-forum-form">
+                <span className="back-link" onClick={() => navigate('/dashboard')}>
+                    ← Back
+                </span>
+                <h1>Create a New Forum</h1>
+                <label htmlFor="forum-name">Forum Name:</label>
                 <input
+                    id="forum-name"
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
                 />
-                <label>Description:</label>
+                <label htmlFor="forum-description">Description:</label>
                 <textarea
+                    id="forum-description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
-                <label>Upload Forum Image:</label>
-                <input type="file" onChange={handleFileChange} />
-                <button type="submit">Create Forum</button>
+                <label htmlFor="forum-image">Upload Forum Image:</label>
+                <input
+                    id="forum-image"
+                    type="file"
+                    onChange={handleFileChange}
+                />
+                <button type="submit" className="create-forum-button">
+                    Create Forum
+                </button>
             </form>
         </div>
     );
