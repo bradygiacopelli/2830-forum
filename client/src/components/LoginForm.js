@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const LoginForm = ({ setIsAuthenticated }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate(); // Hook for navigation
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,14 +17,13 @@ const LoginForm = ({ setIsAuthenticated }) => {
             });
 
             if (response.ok) {
-                const { token, userId } = await response.json();
-                localStorage.setItem('token', token); // Store token
-                localStorage.setItem('userId', userId); // Store userId
-                setIsAuthenticated(true); // Update auth state
+                const data = await response.json();
+                localStorage.setItem('token', data.token);
+                setIsAuthenticated(true);
                 navigate('/dashboard');
             } else {
                 const errorData = await response.json();
-                alert(errorData.message || 'Invalid credentials');
+                alert(errorData.message || 'Failed to log in.');
             }
         } catch (error) {
             console.error('Error during login:', error);
@@ -33,13 +32,12 @@ const LoginForm = ({ setIsAuthenticated }) => {
     };
 
     return (
-        <div style={styles.container}>
-            {/* Back Button */}
-            <button onClick={() => navigate('/')} style={styles.backButton}>
-                ← Back to Home
-            </button>
-
-            <h1>Login</h1>
+        <div className="login-form">
+            {/* Back Button Styled as Text */}
+            <span className="back-link" onClick={() => navigate('/')}>
+                ← Back
+            </span>
+            <h1>Log In</h1>
             <form onSubmit={handleSubmit}>
                 <label>Email:</label>
                 <input
@@ -55,24 +53,10 @@ const LoginForm = ({ setIsAuthenticated }) => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Login</button>
+                <button type="submit" className="login-button">Log In</button>
             </form>
         </div>
     );
-};
-
-const styles = {
-    container: {
-        padding: '20px',
-    },
-    backButton: {
-        background: 'none',
-        border: 'none',
-        color: '#007BFF',
-        fontSize: '16px',
-        cursor: 'pointer',
-        marginBottom: '10px',
-    },
 };
 
 export default LoginForm;

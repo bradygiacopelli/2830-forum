@@ -1,0 +1,93 @@
+/* Login Page Container */
+.login-page {
+    text-align: center;
+    margin: 50px auto;
+    background-color: #9cbdda; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    min-height: calc(100vh - 100px); 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+}
+
+/* Login Form */
+.login-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    text-align: left;
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Labels and Inputs */
+.login-form label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.1s ease, border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.login-form input:focus {
+    border-color: #66b7ea;
+    outline: none;
+    transform: scale(1.02);
+}
+
+/* Back Link Styled as Text */
+.back-link {
+    font-size: 16px;
+    font-weight: bold;
+    color: black; /* Black text */
+    cursor: pointer;
+    text-decoration: none; /* Remove underline */
+    margin-bottom: 15px;
+    display: inline-block;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #555; /* Slightly darker gray on hover */
+}
+
+/* Login Button */
+.login-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(145deg, #5b74e6, #364fc7); /* Gradient for 3D effect */
+    color: white;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for 3D effect */
+    transition: transform 0.1s ease, background 0.1s ease, box-shadow 0.1s ease;
+}
+
+.login-button:hover {
+    background: linear-gradient(145deg, #3b5db3, #283d87); /* Darker gradient on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+.login-button:active {
+    transform: translateY(1px); /* Slight press effect */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+}

@@ -33,12 +33,11 @@ const SignupForm = () => {
     };
 
     return (
-        <div style={styles.container}>
-            {/* Back Button */}
-            <button onClick={() => navigate('/')} style={styles.backButton}>
-                ← Back to Home
-            </button>
-
+        <div className="signup-form">
+            {/* Back Button Styled as Text */}
+            <span className="back-link" onClick={() => navigate('/')}>
+                ← Back
+            </span>
             <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>
                 <label>Email:</label>
@@ -76,24 +75,10 @@ const SignupForm = () => {
                     onChange={(e) => setActualName(e.target.value)}
                     required
                 />
-                <button type="submit">Sign Up</button>
+                <button type="submit" className="signup-button">Sign Up</button>
             </form>
         </div>
     );
-};
-
-const styles = {
-    container: {
-        padding: '20px',
-    },
-    backButton: {
-        background: 'none',
-        border: 'none',
-        color: '#007BFF',
-        fontSize: '16px',
-        cursor: 'pointer',
-        marginBottom: '10px',
-    },
 };
 
 export default SignupForm;
