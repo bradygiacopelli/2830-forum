@@ -241,9 +241,9 @@ const ForumPage = () => {
                                 <h1 className="forum-banner-title">{forum.name}</h1>
                                 <p className="forum-banner-description">{forum.description}</p>
                                 {forum.createdBy === userId && (
-                                    <button onClick={() => setEditing(true)} className="edit-button">
+                                    <Link to={`/edit-forum/${forumId}`} className="edit-button">
                                         Edit Forum
-                                    </button>
+                                    </Link>
                                 )}
                             </div>
                         )}

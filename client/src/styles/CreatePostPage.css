@@ -1,0 +1,103 @@
+/* Page Container */
+.create-post-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);
+    background-color: #9cbdda;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+/* Create Post Container */
+.create-post-container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Heading */
+.create-post-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form Styling */
+.create-post-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.create-post-form label {
+    font-weight: bold;
+    margin: 10px 0 5px;
+    color: #333;
+    align-self: flex-start;
+}
+
+.create-post-form input,
+.create-post-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.create-post-form textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.create-post-form input:focus,
+.create-post-form textarea:focus {
+    border-color: #66b7ea;
+    outline: none;
+    box-shadow: 0 0 4px rgba(102, 183, 234, 0.5);
+}
+
+/* Form Buttons */
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    width: 100%;
+}
+
+.submit-button,
+.cancel-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.submit-button {
+    background: linear-gradient(145deg, #5b74e6, #364fc7);
+    color: white;
+}
+
+.submit-button:hover {
+    background: linear-gradient(145deg, #3b5db3, #283d87);
+    transform: translateY(-2px);
+}
+
+.cancel-button {
+    background: #ccc;
+    color: black;
+}
+
+.cancel-button:hover {
+    background: #aaa;
+    transform: translateY(-2px);
+}
