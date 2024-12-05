@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; // Import useLocation to track navigation
 import '../styles/DashboardPage.css';
 
 const DashboardPage = () => {
     const [forums, setForums] = useState([]);
     const [search, setSearch] = useState('');
+    const location = useLocation(); // Access the current location (route) to trigger refresh on navigation
 
     useEffect(() => {
-        // Fetch subscribed forums
+        // Fetch subscribed forums whenever the component is mounted or the location changes
         const fetchForums = async () => {
-            const response = await fetch('http://localhost:5001/api/forums/subscribed');
-            const data = await response.json();
-            setForums(data);
+            try {
+                const response = await fetch('http://localhost:5001/api/forums/subscribed');
+                const data = await response.json();
+                setForums(data); // Set the fetched forums to state
+            } catch (error) {
+                console.error('Error fetching forums:', error);
+            }
         };
         fetchForums();
-    }, []);
+    }, [location]); // Dependency on location to refresh the data on route change
 
     const filteredForums = forums.filter((forum) =>
         forum.name.toLowerCase().includes(search.toLowerCase())
@@ -51,3 +56,4 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
+
