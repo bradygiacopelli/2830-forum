@@ -14,8 +14,10 @@ function HomePage() {
 
     return (
         <div className="home-page">
+            <img src="/image.png" alt="Scrollspace Logo" className="homepage-logo" />
             <h1>Welcome to ScrollSpace!</h1>
-            <p>This is the home page of your forum app.</p>
+            
+            <p>ScrollSpace is a forum service where ideas are shared, stories are told, and friends are made.</p>
 
 
             <div className="button-container">
