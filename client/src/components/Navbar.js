@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../styles/Navbar.css'; // Import the new CSS file
 
 const Navbar = ({ setIsAuthenticated, profilePicture, refreshProfilePicture }) => {
     const navigate = useNavigate();
@@ -15,62 +16,26 @@ const Navbar = ({ setIsAuthenticated, profilePicture, refreshProfilePicture }) =
     };
 
     return (
-        <nav style={styles.navbar}>
+        <nav className="navbar">
             {/* Logo or Home Button */}
-            <Link to="/dashboard" style={styles.logo}>
+            <Link to="/dashboard" className="navbar-logo">
                 ScrollSpace
             </Link>
 
             {/* Right Side - Profile Picture and Logout */}
-            <div style={styles.navRight}>
+            <div className="navbar-right">
                 <img
                     src={profilePicture}
                     alt="Profile"
-                    style={styles.profilePicture}
+                    className="navbar-profile-picture"
                     onClick={() => navigate('/profile')}
                 />
-                <button onClick={handleLogout} style={styles.logoutButton}>Logout</button>
+                <button onClick={handleLogout} className="navbar-logout-button">
+                    Logout
+                </button>
             </div>
         </nav>
     );
-};
-
-const styles = {
-    navbar: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '10px 20px',
-        backgroundColor: '#333',
-        color: '#fff',
-        position: 'sticky',
-        top: 0,
-        zIndex: 1000,
-    },
-    logo: {
-        color: '#fff',
-        textDecoration: 'none',
-        fontSize: '24px',
-    },
-    navRight: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    profilePicture: {
-        width: '40px',
-        height: '40px',
-        borderRadius: '50%',
-        cursor: 'pointer',
-        marginRight: '10px',
-    },
-    logoutButton: {
-        padding: '5px 10px',
-        backgroundColor: 'red',
-        color: 'white',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-    },
 };
 
 export default Navbar;

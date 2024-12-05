@@ -1,0 +1,54 @@
+/* Home page container */
+.home-page {
+    text-align: center;
+    margin: 50px auto;
+    background-color: #9cbdda; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    min-height: calc(100vh - 100px); 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+}
+
+/* Buttons with 3D gradient */
+.homepage-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(145deg, #5b74e6, #364fc7); /* Gradient for 3D effect */
+    color: white;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for 3D effect */
+    transition: transform 0.1s ease, background 0.1s ease, box-shadow 0.1s ease;
+}
+
+.homepage-button:hover {
+    background: linear-gradient(145deg, #3b5db3, #283d87); /* Darker gradient on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+.homepage-button:active {
+    transform: translateY(1px); /* Slight press effect */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+}
+
+/* Text between buttons */
+.or-text {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Button container */
+.button-container {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px; 
+    margin-top: 20px;
+}

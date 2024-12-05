@@ -47,7 +47,7 @@ router.post('/:postId/like', async (req, res) => {
         return res.status(400).json({ message: 'User ID is required' });
     }
     try {
-        const post = await Post.findById(req.params.postId).populate('createdBy', 'displayName profilePicture');
+        const post = await Post.findById(req.params.postId);
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
         }
@@ -59,7 +59,6 @@ router.post('/:postId/like', async (req, res) => {
             post.likedBy.push(userId);
             post.likes += 1;
 
-            // If previously disliked, remove the dislike
             if (post.dislikedBy.includes(userId)) {
                 post.dislikedBy.pull(userId);
                 post.dislikes -= 1;
@@ -69,7 +68,7 @@ router.post('/:postId/like', async (req, res) => {
         await post.save();
 
         // Re-populate the `createdBy` field
-        await post.populate('createdBy', 'displayName profilePicture');
+        await post.populate('createdBy', 'username displayName profilePicture');
 
         res.json(post);
     } catch (err) {
@@ -85,7 +84,7 @@ router.post('/:postId/dislike', async (req, res) => {
         return res.status(400).json({ message: 'User ID is required' });
     }
     try {
-        const post = await Post.findById(req.params.postId).populate('createdBy', 'displayName profilePicture');
+        const post = await Post.findById(req.params.postId);
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
         }
@@ -97,7 +96,6 @@ router.post('/:postId/dislike', async (req, res) => {
             post.dislikedBy.push(userId);
             post.dislikes += 1;
 
-            // If previously liked, remove the like
             if (post.likedBy.includes(userId)) {
                 post.likedBy.pull(userId);
                 post.likes -= 1;
@@ -107,7 +105,7 @@ router.post('/:postId/dislike', async (req, res) => {
         await post.save();
 
         // Re-populate the `createdBy` field
-        await post.populate('createdBy', 'displayName profilePicture');
+        await post.populate('createdBy', 'username displayName profilePicture');
 
         res.json(post);
     } catch (err) {
@@ -115,6 +113,7 @@ router.post('/:postId/dislike', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 
 module.exports = router;

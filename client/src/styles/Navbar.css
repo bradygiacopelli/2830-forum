@@ -1,0 +1,73 @@
+/* Navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: linear-gradient(145deg, #2c2c2c, #1a1a1a); /* Dark grey gradient */
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.15); /* 3D shadow */
+    position: sticky; /* Sticks the navbar to the top */
+    top: 0; /* Defines the sticking position */
+    z-index: 1000; /* Ensures it appears above other elements */
+    height: 60px;
+    color: #fff;
+}
+
+
+/* Logo in the center */
+.navbar-logo {
+    font-size: 32px; /* Slightly bigger */
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff; /* Fallback */
+    background: linear-gradient(to right, #d4d4d4, #f2f2f2); /* Light grey gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
+
+/* Right section (profile picture and logout button) */
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Profile picture */
+.navbar-profile-picture {
+    width: 35px; /* Slightly smaller */
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #fff; /* Optional white border */
+    cursor: pointer;
+    margin-right: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* 3D effect */
+}
+
+/* Logout button */
+.navbar-logout-button {
+    padding: 8px 15px;
+    background: linear-gradient(145deg, #ff4d4d, #d40000); /* Glossy red gradient */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+}
+
+.navbar-logout-button:hover {
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-right {
+        margin-top: 10px;
+    }
+}

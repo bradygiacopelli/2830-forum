@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import '../styles/ForumPage.css';
 
 const ForumPage = () => {
-    const { forumId } = useParams(); // Get forumId from URL
+    const { forumId } = useParams();
     const [forum, setForum] = useState(null);
     const [posts, setPosts] = useState([]);
-    const [sort, setSort] = useState('latest'); // 'latest' or 'mostLiked'
+    const [sort, setSort] = useState('latest');
     const [isSubscribed, setIsSubscribed] = useState(false);
-    const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
+    const [editing, setEditing] = useState(false);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [file, setFile] = useState(null);
+    const userId = localStorage.getItem('userId');
 
     // Fetch forum details
     useEffect(() => {
@@ -17,8 +22,8 @@ const ForumPage = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setForum(data);
-                } else {
-                    console.error('Failed to fetch forum details');
+                    setName(data.name);
+                    setDescription(data.description);
                 }
             } catch (error) {
                 console.error('Error fetching forum details:', error);
@@ -27,7 +32,7 @@ const ForumPage = () => {
         fetchForum();
     }, [forumId]);
 
-    // Fetch posts for the forum
+    // Fetch posts
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -37,8 +42,6 @@ const ForumPage = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setPosts(data);
-                } else {
-                    console.error('Failed to fetch posts');
                 }
             } catch (error) {
                 console.error('Error fetching posts:', error);
@@ -69,55 +72,30 @@ const ForumPage = () => {
         fetchSubscriptionStatus();
     }, [forumId, userId]);
 
-    const updatePostUI = (updatedPost) => {
-        setPosts((prevPosts) =>
-            prevPosts.map((post) => (post._id === updatedPost._id ? updatedPost : post))
-        );
-    };
+    const handleFileChange = (e) => setFile(e.target.files[0]);
 
-    const handleLike = async (postId) => {
+    const handleSave = async () => {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', description);
+        if (file) formData.append('image', file);
+
         try {
-            const response = await fetch(`http://localhost:5001/api/posts/${postId}/like`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId }),
+            const response = await fetch(`http://localhost:5001/api/forums/${forumId}`, {
+                method: 'PUT',
+                body: formData,
             });
 
             if (response.ok) {
-                const updatedPost = await response.json(); // Fetch updated post data
-                updatePostUI(updatedPost); // Update the specific post in the UI
+                const updatedForum = await response.json();
+                setForum(updatedForum.forum);
+                setEditing(false);
+                alert('Forum updated successfully!');
             } else {
-                const errorData = await response.json();
-                alert(errorData.message || 'Failed to like the post.');
+                alert('Failed to update forum.');
             }
         } catch (error) {
-            console.error('Error liking post:', error);
-            alert('An error occurred while liking the post.');
-        }
-    };
-
-    const handleDislike = async (postId) => {
-        try {
-            const response = await fetch(`http://localhost:5001/api/posts/${postId}/dislike`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId }),
-            });
-
-            if (response.ok) {
-                const updatedPost = await response.json(); // Fetch updated post data
-                updatePostUI(updatedPost); // Update the specific post in the UI
-            } else {
-                const errorData = await response.json();
-                alert(errorData.message || 'Failed to dislike the post.');
-            }
-        } catch (error) {
-            console.error('Error disliking post:', error);
-            alert('An error occurred while disliking the post.');
+            console.error('Error updating forum:', error);
         }
     };
 
@@ -157,51 +135,189 @@ const ForumPage = () => {
         }
     };
 
+    const handleLike = async (postId) => {
+        try {
+            const response = await fetch(`http://localhost:5001/api/posts/${postId}/like`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId }),
+            });
+
+            if (response.ok) {
+                const updatedPost = await response.json();
+                setPosts((prevPosts) =>
+                    prevPosts.map((post) =>
+                        post._id === postId
+                            ? {
+                                ...post,
+                                likes: updatedPost.likes,
+                                dislikes: updatedPost.dislikes,
+                                likedBy: updatedPost.likedBy,
+                                dislikedBy: updatedPost.dislikedBy,
+                                createdBy: {
+                                    ...post.createdBy, // Ensure `createdBy` is preserved
+                                    ...updatedPost.createdBy,
+                                },
+                            }
+                            : post
+                    )
+                );
+            }
+        } catch (error) {
+            console.error('Error liking post:', error);
+        }
+    };
+
+    const handleDislike = async (postId) => {
+        try {
+            const response = await fetch(`http://localhost:5001/api/posts/${postId}/dislike`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId }),
+            });
+
+            if (response.ok) {
+                const updatedPost = await response.json();
+                setPosts((prevPosts) =>
+                    prevPosts.map((post) =>
+                        post._id === postId
+                            ? {
+                                ...post,
+                                likes: updatedPost.likes,
+                                dislikes: updatedPost.dislikes,
+                                likedBy: updatedPost.likedBy,
+                                dislikedBy: updatedPost.dislikedBy,
+                                createdBy: {
+                                    ...post.createdBy, // Ensure `createdBy` is preserved
+                                    ...updatedPost.createdBy,
+                                },
+                            }
+                            : post
+                    )
+                );
+            }
+        } catch (error) {
+            console.error('Error disliking post:', error);
+        }
+    };
+
     return (
-        <div>
-            {/* Display the forum name */}
-            <h1>{forum ? forum.name : 'Loading...'}</h1>
-            <p>{forum ? forum.description : ''}</p>
-
-            {/* Subscribe/Unsubscribe Button */}
-            <button onClick={isSubscribed ? handleUnsubscribe : handleSubscribe}>
-                {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
-            </button>
-
-            {/* Add a button to create a post */}
-            <Link to={`/forums/${forumId}/create-post`}>
-                <button>Create Post</button>
-            </Link>
-
-            {/* Sorting options */}
-            <div>
-                <button onClick={() => setSort('latest')}>Sort by Latest</button>
-                <button onClick={() => setSort('mostLiked')}>Sort by Most Liked</button>
-            </div>
-
-            {/* List of posts */}
-            <ul>
-                {posts.map((post) => (
-                    <li key={post._id}>
-                        <h2>{post.title}</h2>
-                        <p>{post.content}</p>
-                        {post.createdBy && (
-                            <div>
-                                <Link to={`/users/${post.createdBy._id}`}>
-                                    <img
-                                        src={`http://localhost:5001${post.createdBy.profilePicture}`}
-                                        alt={post.createdBy.displayName}
-                                        style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-                                    />
-                                    <span>{post.createdBy.displayName}</span>
-                                </Link>
+        <div className="forum-page">
+            {forum ? (
+                <>
+                    {/* Forum Banner */}
+                    <div className="forum-banner">
+                        <img
+                            src={`http://localhost:5001${forum.image}`}
+                            alt="Forum Banner"
+                            className="forum-banner-image"
+                        />
+                        {editing ? (
+                            <div className="edit-forum-container">
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Forum Name"
+                                    className="edit-input"
+                                />
+                                <textarea
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    placeholder="Forum Description"
+                                    className="edit-textarea"
+                                />
+                                <label className="edit-file-label">
+                                    Upload New Banner:
+                                    <input type="file" onChange={handleFileChange} className="edit-file-input" />
+                                </label>
+                                <div className="edit-buttons">
+                                    <button onClick={handleSave} className="save-button">Save Changes</button>
+                                    <button onClick={() => setEditing(false)} className="cancel-button">Cancel</button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="forum-banner-content">
+                                <h1 className="forum-banner-title">{forum.name}</h1>
+                                <p className="forum-banner-description">{forum.description}</p>
+                                {forum.createdBy === userId && (
+                                    <Link to={`/edit-forum/${forumId}`} className="edit-button">
+                                        Edit Forum
+                                    </Link>
+                                )}
                             </div>
                         )}
-                        <button onClick={() => handleLike(post._id)}>Like ({post.likes})</button>
-                        <button onClick={() => handleDislike(post._id)}>Dislike ({post.dislikes})</button>
-                    </li>
-                ))}
-            </ul>
+                    </div>
+
+                    {/* Forum Actions */}
+                    <div className="forum-actions">
+                        {isSubscribed ? (
+                            <button onClick={handleUnsubscribe} className="subscribe-button">
+                                Unsubscribe
+                            </button>
+                        ) : (
+                            <button onClick={handleSubscribe} className="subscribe-button">
+                                Subscribe
+                            </button>
+                        )}
+                        <Link to={`/forums/${forumId}/create-post`} className="create-post-button">
+                            Create Post
+                        </Link>
+                        <button
+                            onClick={() => setSort('latest')}
+                            className={`sort-button ${sort === 'latest' ? 'active' : ''}`}
+                        >
+                            Sort by Latest
+                        </button>
+                        <button
+                            onClick={() => setSort('mostLiked')}
+                            className={`sort-button ${sort === 'mostLiked' ? 'active' : ''}`}
+                        >
+                            Sort by Most Liked
+                        </button>
+                    </div>
+
+                    {/* Posts */}
+                    <div className="forum-posts">
+                        {posts.map((post) => (
+                            <div key={post._id} className="post-card">
+                                <div className="post-header">
+                                    <Link to={`/users/${post.createdBy._id}`} className="post-user">
+                                        <img
+                                            src={`http://localhost:5001${post.createdBy.profilePicture}`}
+                                            alt={post.createdBy.displayName}
+                                            className="post-user-image"
+                                        />
+                                        <span className="post-display-name">
+                                            {post.createdBy.displayName}
+                                        </span>
+                                        <span className="post-username">
+                                            @{post.createdBy.username}
+                                        </span>
+                                    </Link>
+                                </div>
+                                <div className="post-body">
+                                    <h2>{post.title}</h2>
+                                    <p>{post.content}</p>
+                                </div>
+                                <div className="post-footer">
+                                    <button onClick={() => handleLike(post._id)} className="like-button">
+                                        👍 {post.likes}
+                                    </button>
+                                    <button
+                                        onClick={() => handleDislike(post._id)}
+                                        className="dislike-button"
+                                    >
+                                        👎 {post.dislikes}
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            ) : (
+                <p>Loading forum...</p>
+            )}
         </div>
     );
 };

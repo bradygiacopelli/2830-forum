@@ -2,6 +2,69 @@ const express = require('express');
 const router = express.Router();
 const Forum = require('../models/Forum');
 const User = require('../models/User')
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Configure multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const uploadPath = path.join(__dirname, '../public/uploads');
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+        cb(null, uploadPath);
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    },
+});
+
+const upload = multer({ storage });
+
+// Update forum details
+router.put('/:forumId', upload.single('image'), async (req, res) => {
+    const { name, description } = req.body;
+
+    try {
+        const forum = await Forum.findById(req.params.forumId);
+        if (!forum) {
+            return res.status(404).json({ message: 'Forum not found' });
+        }
+
+        // Update fields
+        if (name) forum.name = name;
+        if (description) forum.description = description;
+        if (req.file) {
+            forum.image = `/uploads/${req.file.filename}`;
+        }
+
+        await forum.save();
+        res.json({ message: 'Forum updated successfully', forum });
+    } catch (err) {
+        console.error('Error updating forum:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Update forum image
+router.put('/:forumId/image', upload.single('image'), async (req, res) => {
+    try {
+        const forum = await Forum.findById(req.params.forumId);
+        if (!forum) {
+            return res.status(404).json({ message: 'Forum not found' });
+        }
+
+        forum.image = `/uploads/${req.file.filename}`;
+        await forum.save();
+
+        res.json({ message: 'Image updated successfully', forum });
+    } catch (err) {
+        console.error('Error updating forum image:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 
 // Get forums the user is subscribed to
 router.get('/subscribed', async (req, res) => {
@@ -14,8 +77,8 @@ router.get('/subscribed', async (req, res) => {
     }
 });
 
-// Create a new forum
-router.post('/create', async (req, res) => {
+// Create a new forum with image upload
+router.post('/create', upload.single('image'), async (req, res) => {
     const { name, description, userId } = req.body;
 
     if (!name || !userId) {
@@ -29,6 +92,11 @@ router.post('/create', async (req, res) => {
             createdBy: userId,
             subscribers: [userId], // Automatically subscribe the creator
         });
+
+        // Attach image if uploaded
+        if (req.file) {
+            forum.image = `/uploads/${req.file.filename}`;
+        }
 
         await forum.save();
 
@@ -44,6 +112,7 @@ router.post('/create', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 // Get a specific forum by ID
 router.get('/:forumId', async (req, res) => {

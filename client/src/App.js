@@ -9,6 +9,7 @@ import CreatePostPage from './pages/CreatePostPage';
 import Navbar from './components/Navbar';
 import ProfilePage from './pages/ProfilePage';
 import CreateForumPage from './pages/CreateForumPage';
+import EditForumPage from './pages/EditForumPage';
 import PublicProfilePage from './pages/PublicProfilePage';
 
 const App = () => {
@@ -67,6 +68,7 @@ const App = () => {
                         />
                         <Route path="/create-forum" element={<CreateForumPage />} />
                         <Route path="/forums/:forumId" element={<ForumPage />} />
+                        <Route path="/edit-forum/:forumId" element={<EditForumPage />} />
                         <Route path="/forums/:forumId/create-post" element={<CreatePostPage />} />
                         <Route path="/users/:userId" element={<PublicProfilePage />} />
                     </>
