@@ -28,7 +28,7 @@ const EditForumPage = () => {
         fetchForum();
     }, [forumId]);
 
-    const handleFileChange = (e) => setFile(e.target.files[0]);
+    const handleFileChange = (e) => setFile(e.target.files[0]); // comment
 
     const handleSave = async () => {
         const formData = new FormData();
