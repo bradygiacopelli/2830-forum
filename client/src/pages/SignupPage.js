@@ -5,6 +5,7 @@ import '../styles/SignupPage.css';
 const SignupPage = () => {
     return (
         <div className="signup-page">
+            <img src="/image.png" alt="Scrollspace Logo" className="login-logo" />
             <SignupForm />
         </div>
     );
