@@ -6,32 +6,14 @@ import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
 import ForumPage from './pages/ForumPage';
 import CreatePostPage from './pages/CreatePostPage';
-<<<<<<< HEAD
 import Navbar from './components/Navbar';
-import GuestNavbar from './components/GuestNavbar'; // Separate Guest Navbar
-=======
-import Navbar from './components/Navbar'; // Authenticated Navbar
-import NavbarGuest from './components/NavbarGuest'; // Guest Navbar
->>>>>>> fe10d5d4f78e800e9fb51c7108e3c000b59c86a7
+import NavbarGuest from './components/NavbarGuest';
 import ProfilePage from './pages/ProfilePage';
 import CreateForumPage from './pages/CreateForumPage';
 import EditForumPage from './pages/EditForumPage';
 import PublicProfilePage from './pages/PublicProfilePage';
 
 const App = () => {
-<<<<<<< HEAD
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [guestMode, setGuestMode] = useState(false);
-    const [profilePicture, setProfilePicture] = useState('/uploads/default-profile.png');
-
-    // Function to reset authentication states
-    const resetAuthStates = () => {
-        const token = localStorage.getItem('token');
-        const userPicture = localStorage.getItem('profilePicture');
-        const tokenGuest = token === 'guest';
-        setIsAuthenticated(!!token && !tokenGuest);
-        setGuestMode(tokenGuest);
-=======
     const [isAuthenticated, setIsAuthenticated] = useState(null); // Start with null to check state before rendering
     const [guestMode, setGuestMode] = useState(null); // Same here, null until checked
     const [profilePicture, setProfilePicture] = useState('/uploads/default-profile.png');
@@ -44,22 +26,12 @@ const App = () => {
         setIsAuthenticated(!!token && !tokenGuest); // true if authenticated, false if guest
         setGuestMode(tokenGuest); // Set guest mode if token is 'guest'
 
->>>>>>> fe10d5d4f78e800e9fb51c7108e3c000b59c86a7
         if (userPicture) {
             setProfilePicture(userPicture);
         } else {
             setProfilePicture('/uploads/default-profile.png');
         }
-<<<<<<< HEAD
-    };
-
-    // Check auth state on load
-    useEffect(() => {
-        resetAuthStates();
-    }, []);
-=======
     }, []); // This will run only once when the component mounts
->>>>>>> fe10d5d4f78e800e9fb51c7108e3c000b59c86a7
 
     const refreshProfilePicture = async () => {
         const userId = localStorage.getItem('userId');
@@ -76,44 +48,6 @@ const App = () => {
             console.error('Error refreshing profile picture:', error);
         }
     };
-
-<<<<<<< HEAD
-    const handleLoginStateChange = () => {
-        resetAuthStates();
-    };
-
-    return (
-        <Router>
-            {/* Conditionally render the appropriate Navbar */}
-            {guestMode ? (
-                <GuestNavbar />
-            ) : (
-                isAuthenticated && (
-                    <Navbar
-                        setIsAuthenticated={setIsAuthenticated}
-                        profilePicture={profilePicture}
-                        refreshProfilePicture={refreshProfilePicture}
-                    />
-                )
-            )}
-            <Routes>
-                {/* Routes for all users */}
-                <Route
-                    path="/"
-                    element={
-                        <HomePage
-                            setGuestMode={(mode) => {
-                                setGuestMode(mode);
-                                handleLoginStateChange(); // Reset state dynamically
-                            }}
-                        />
-                    }
-                />
-                <Route
-                    path="/login"
-                    element={<LoginPage setIsAuthenticated={setIsAuthenticated} />}
-                />
-=======
     if (isAuthenticated === null || guestMode === null) {
         return null; // Return null or a loading spinner while the state is being determined
     }
@@ -171,7 +105,6 @@ const RoutesWrapper = ({
             <Routes>
                 <Route path="/" element={<HomePage setGuestMode={setGuestMode} />} />
                 <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
->>>>>>> fe10d5d4f78e800e9fb51c7108e3c000b59c86a7
                 <Route path="/signup" element={<SignupPage />} />
 
                 {guestMode ? (
@@ -181,10 +114,6 @@ const RoutesWrapper = ({
                         <Route path="*" element={<Navigate to="/" />} />
                     </>
                 ) : (
-<<<<<<< HEAD
-                    // Authenticated users
-=======
->>>>>>> fe10d5d4f78e800e9fb51c7108e3c000b59c86a7
                     <>
                         <Route path="/dashboard" element={<DashboardPage />} />
                         <Route
@@ -204,8 +133,3 @@ const RoutesWrapper = ({
 };
 
 export default App;
-<<<<<<< HEAD
-=======
-
-
->>>>>>> fe10d5d4f78e800e9fb51c7108e3c000b59c86a7

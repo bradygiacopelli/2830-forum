@@ -32,19 +32,23 @@
     align-items: center;
 }
 
-/* Login button */
-.navbar-login-button {
+/* Login and Signup buttons */
+.navbar-login-button,
+.navbar-signup-button {
     padding: 8px 15px;
-    background: linear-gradient(145deg, #4caf50, #087f23);
+    background: linear-gradient(145deg, #4caf50, #087f23); /* Green gradient */
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 8px; /* Rounded corners */
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* 3D shadow */
+    margin: 7px;
 }
 
-.navbar-login-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+.navbar-login-button:hover,
+.navbar-signup-button:hover {
+    transform: translateY(-2px); /* Slight upward movement */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
 }
+

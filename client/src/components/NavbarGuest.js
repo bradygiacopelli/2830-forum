@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import '../styles/Navbar.css'; // Import the new CSS file
+import '../styles/NavbarGuest.css';
 
 const NavbarGuest = ({ guestMode }) => {
     const navigate = useNavigate();
@@ -13,20 +13,24 @@ const NavbarGuest = ({ guestMode }) => {
 
     return (
         <nav className="navbar">
-            {/* Logo or Home Button */}
-            <Link to="/" className="navbar-logo">
-                ScrollSpace
-            </Link>
+            {/* Left Side - Logo */}
+            <div className="navbar-left" onClick={() => navigate('/dashboard')}>
+                <img
+                    src="/image.png" // Path to the logo in `public`
+                    alt="ScrollSpace Logo"
+                    className="navbar-logo-image"
+                />
+            </div>
 
             {/* Right Side - Conditionally Rendered Buttons for Guest Mode */}
             <div className="navbar-right">
                 {guestMode && (
                     <>
                         <Link to="/login">
-                            <button className="homepage-button">Login</button>
+                            <button className="navbar-login-button">Login</button>
                         </Link>
                         <Link to="/signup">
-                            <button className="homepage-button">Sign Up</button>
+                            <button className="navbar-signup-button">Sign Up</button>
                         </Link>
                     </>
                 )}
