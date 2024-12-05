@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../styles/Navbar.css'; // Import the new CSS file
+import { useNavigate } from 'react-router-dom';
+import '../styles/Navbar.css'; // Import the CSS file
 
 const Navbar = ({ setIsAuthenticated, profilePicture, refreshProfilePicture }) => {
     const navigate = useNavigate();
@@ -17,10 +17,14 @@ const Navbar = ({ setIsAuthenticated, profilePicture, refreshProfilePicture }) =
 
     return (
         <nav className="navbar">
-            {/* Logo or Home Button */}
-            <Link to="/dashboard" className="navbar-logo">
-                ScrollSpace
-            </Link>
+            {/* Left Side - Logo */}
+            <div className="navbar-left" onClick={() => navigate('/dashboard')}>
+                <img
+                    src="/image.png" // Path to the logo in `public`
+                    alt="ScrollSpace Logo"
+                    className="navbar-logo-image"
+                />
+            </div>
 
             {/* Right Side - Profile Picture and Logout */}
             <div className="navbar-right">
@@ -30,7 +34,7 @@ const Navbar = ({ setIsAuthenticated, profilePicture, refreshProfilePicture }) =
                     className="navbar-profile-picture"
                     onClick={() => navigate('/profile')}
                 />
-                <button onClick={handleLogout} className="navbar-logout-button">
+                <button onClick={() => handleLogout()} className="navbar-logout-button">
                     Logout
                 </button>
             </div>
