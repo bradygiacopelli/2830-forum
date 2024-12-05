@@ -6,27 +6,30 @@ import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
 import ForumPage from './pages/ForumPage';
 import CreatePostPage from './pages/CreatePostPage';
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar'; // Authenticated Navbar
+import NavbarGuest from './components/NavbarGuest'; // Guest Navbar
 import ProfilePage from './pages/ProfilePage';
 import CreateForumPage from './pages/CreateForumPage';
 import EditForumPage from './pages/EditForumPage';
 import PublicProfilePage from './pages/PublicProfilePage';
 
 const App = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [guestMode, setGuestMode] = useState(false); 
+    const [isAuthenticated, setIsAuthenticated] = useState(null); // Start with null to check state before rendering
+    const [guestMode, setGuestMode] = useState(null); // Same here, null until checked
     const [profilePicture, setProfilePicture] = useState('/uploads/default-profile.png');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         const userPicture = localStorage.getItem('profilePicture');
         const tokenGuest = token === 'guest';
-        setIsAuthenticated(!!token && !tokenGuest);
-        setGuestMode(tokenGuest);
+
+        setIsAuthenticated(!!token && !tokenGuest); // true if authenticated, false if guest
+        setGuestMode(tokenGuest); // Set guest mode if token is 'guest'
+
         if (userPicture) {
             setProfilePicture(userPicture);
         }
-    }, []);
+    }, []); // This will run only once when the component mounts
 
     const refreshProfilePicture = async () => {
         const userId = localStorage.getItem('userId');
@@ -44,6 +47,10 @@ const App = () => {
         }
     };
 
+    if (isAuthenticated === null || guestMode === null) {
+        return null; // Return null or a loading spinner while the state is being determined
+    }
+
     return (
         <Router>
             <RoutesWrapper
@@ -58,24 +65,40 @@ const App = () => {
     );
 };
 
-const RoutesWrapper = ({ isAuthenticated, guestMode, setIsAuthenticated, profilePicture, refreshProfilePicture, setGuestMode }) => {
-    const location = useLocation(); // Access the current route
-    const [currentPath, setCurrentPath] = useState(location.pathname); // Track current path for re-render
+const RoutesWrapper = ({
+    isAuthenticated,
+    guestMode,
+    setIsAuthenticated,
+    profilePicture,
+    refreshProfilePicture,
+    setGuestMode
+}) => {
+    const location = useLocation(); // Access location here inside the Router context
 
+    // Reset navbar state when visiting the login page, ensuring the logged-in navbar shows if user is authenticated
     useEffect(() => {
-        setCurrentPath(location.pathname); // Update the path on route change
-    }, [location]);
+        if (location.pathname === '/login' || location.pathname === '/signup') {
+            // When visiting login or signup, the navbar should not be visible.
+            setIsAuthenticated(false);
+            setGuestMode(false);
+        }
+    }, [location.pathname]); // This effect will run when location changes (i.e., when user navigates)
 
     return (
         <>
-            {/* Render Navbar only if not on the home page */}
-            {(isAuthenticated || guestMode) && location.pathname !== '/' && (
+            {/* Conditionally render Navbar based on authentication */}
+            {isAuthenticated && location.pathname !== '/login' && location.pathname !== '/signup' && (
                 <Navbar
-                    key={currentPath} // Force re-render on path change
+                    guestMode={guestMode}
                     setIsAuthenticated={setIsAuthenticated}
                     profilePicture={profilePicture}
                     refreshProfilePicture={refreshProfilePicture}
                 />
+            )}
+
+            {/* Render the guest navbar only if in guest mode and not on login/signup pages */}
+            {guestMode && location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/' && (
+                <NavbarGuest guestMode={guestMode} />
             )}
 
             <Routes>
