@@ -1,28 +1,22 @@
-/* Navbar container */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #00103c; /* Updated background color */
+    background-color: #00103c; /* Consistent color */
     color: #fff;
     position: sticky;
     top: 0;
     z-index: 1000;
     height: 70px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer; /* Ensure navbar-left is clickable */
 }
 
-/* Left section (Logo only, clickable) */
+/* Left section */
 .navbar-left {
     display: flex;
     align-items: center;
-    cursor: pointer;
 }
-
-.homepage-button {
-    margin-right: 10px;}
 
 /* Logo Image */
 .navbar-logo-image {
@@ -32,36 +26,29 @@
     transition: transform 0.2s ease;
 }
 
-/* Right section (profile picture and logout button) */
+/* Right section */
 .navbar-right {
     display: flex;
     align-items: center;
 }
 
-/* Profile picture */
-.navbar-profile-picture {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    cursor: pointer;
-    margin-right: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-/* Logout button */
-.navbar-logout-button {
+/* Login and Signup buttons */
+.navbar-login-button,
+.navbar-signup-button {
     padding: 8px 15px;
-    background: linear-gradient(145deg, #ff4d4d, #d40000); /* Red gradient */
+    background: linear-gradient(145deg, #4caf50, #087f23); /* Green gradient */
     color: white;
     border: none;
     border-radius: 8px; /* Rounded corners */
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* 3D shadow */
+    margin: 7px;
 }
 
-.navbar-logout-button:hover {
+.navbar-login-button:hover,
+.navbar-signup-button:hover {
     transform: translateY(-2px); /* Slight upward movement */
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
 }
+
