@@ -14,13 +14,16 @@ import PublicProfilePage from './pages/PublicProfilePage';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [guestMode, setGuestMode] = useState(false); // Track if the user is in guest mode
     const [profilePicture, setProfilePicture] = useState('/uploads/default-profile.png');
 
     // Check if the user is logged in and set the profile picture on app load
     useEffect(() => {
         const token = localStorage.getItem('token');
         const userPicture = localStorage.getItem('profilePicture');
-        setIsAuthenticated(!!token); // Convert token existence to boolean
+        const tokenGuest = token === 'guest'; // Check if user is a guest
+        setIsAuthenticated(!!token && !tokenGuest); // If token exists and it's not a guest, the user is authenticated
+        setGuestMode(tokenGuest); // Set guest mode if token is 'guest'
         if (userPicture) {
             setProfilePicture(userPicture);
         }
@@ -44,7 +47,7 @@ const App = () => {
 
     return (
         <Router>
-            {/* Conditionally render the Navbar */}
+            {/* Conditionally render the Navbar for authenticated or guest users */}
             <div>
                 {isAuthenticated && (
                     <Navbar
@@ -56,24 +59,29 @@ const App = () => {
             </div>
 
             <Routes>
-                <Route path="/" element={<HomePage />} />
+                {/* Routes for all users */}
+                <Route path="/" element={<HomePage setGuestMode={setGuestMode} />} />
                 <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
                 <Route path="/signup" element={<SignupPage />} />
-                {isAuthenticated ? (
+
+                {/* Guest users */}
+                {guestMode ? (
                     <>
                         <Route path="/dashboard" element={<DashboardPage />} />
-                        <Route
-                            path="/profile"
-                            element={<ProfilePage refreshProfilePicture={refreshProfilePicture} />}
-                        />
+                        <Route path="/forums/:forumId" element={<ForumPage />} />
+                        <Route path="*" element={<Navigate to="/" />} /> {/* Redirect guest users to Home */}
+                    </>
+                ) : (
+                    // Authenticated users can access all routes
+                    <>
+                        <Route path="/dashboard" element={<DashboardPage />} />
+                        <Route path="/profile" element={<ProfilePage refreshProfilePicture={refreshProfilePicture} />} />
                         <Route path="/create-forum" element={<CreateForumPage />} />
                         <Route path="/forums/:forumId" element={<ForumPage />} />
                         <Route path="/edit-forum/:forumId" element={<EditForumPage />} />
                         <Route path="/forums/:forumId/create-post" element={<CreatePostPage />} />
                         <Route path="/users/:userId" element={<PublicProfilePage />} />
                     </>
-                ) : (
-                    <Route path="*" element={<Navigate to="/" />} />
                 )}
             </Routes>
         </Router>
@@ -81,3 +89,4 @@ const App = () => {
 };
 
 export default App;
+
