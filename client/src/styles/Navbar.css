@@ -21,6 +21,9 @@
     cursor: pointer;
 }
 
+.homepage-button {
+    margin-right: 10px;}
+
 /* Logo Image */
 .navbar-logo-image {
     width: 85px;
