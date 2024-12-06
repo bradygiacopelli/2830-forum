@@ -35,7 +35,7 @@ This web application serves as a local forum platform where users can join discu
 ## Technologies Used
 - **Frontend:** React (Components, State Management)
 - **Backend:** Node.js with Express.js
-- **Database:** MongoDB or MySQL (based on preference)
+- **Database:** MongoDB
 - **Authentication:** JWT (JSON Web Tokens) for session handling
 - **Styling:** CSS for responsive design
 
