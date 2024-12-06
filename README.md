@@ -37,7 +37,7 @@ This web application serves as a local forum platform where users can join discu
 - **Backend:** Node.js with Express.js
 - **Database:** MongoDB or MySQL (based on preference)
 - **Authentication:** JWT (JSON Web Tokens) for session handling
-- **Styling:** Bootstrap/W3.CSS for responsive design
+- **Styling:** CSS for responsive design
 
 ## Development Milestones
 1. **Authentication System**
@@ -46,7 +46,6 @@ This web application serves as a local forum platform where users can join discu
 4. **Follow System**
 5. **Search and Filter**
 6. **Responsive UI**
-7. **Testing and Debugging**
 
 
 ## How to Run the App
